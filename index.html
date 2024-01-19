@@ -18,9 +18,12 @@
 
         // Get the value of the "did" parameter
         const did = urlParams.get('did');
+
+        // Get the value of the "aka_invite_code" parameter
+        const aka_invite_code = urlParams.get('aka_invite_code');
         
         // Display the value on the webpage
-        document.body.innerHTML = `<h1>Member Number: ${memberNo}</h1><h1>did: ${did}</h1>`;
+        document.body.innerHTML = `<h1>Member Number: ${memberNo}</h1><h1>did: ${did}</h1><h1>aka_invite_code: ${aka_invite_code}</h1>`;
     }
 
     // Call the function when the page loads

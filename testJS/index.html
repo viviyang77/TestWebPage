@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!--[if IE 6]><html class="ie6 lte9 lte8 lte7" lang="zh-tw"><![endif]-->
+<!--[if IE 8]><html class="ie8 lte9 lte8" lang="zh-tw"><![endif]-->
+<!--[if IE 9]><html class="ie9 lte9" lang="zh-tw"><![endif]-->
+<!--[if IE 7]><html class="ie7 lte9 lte8 lte7" lang="zh-tw"><![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8) | !(IE 9)  ]><!-->
+<html lang="zh-tw">
+<!--<![endif]-->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable:no">
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+
+    <title>Register successful</title>
+    <style type="text/css">
+        .btn {
+            margin-bottom: 10px;
+        }
+        p, form {
+          margin-top: 20px;
+        }
+    </style>
+</head>
+<h1>測試 JavaScript callbacks</h1>
+
+<body>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h3>Put Event</h3>
+                <button type="button" class="btn btn-success" onclick="sendRegisterSuccessulEvent();">SEND</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h3>Open WebView</h3>
+                <button type="button" class="btn btn-success" onclick="openViewEvent();">Open</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h3>Close WebView</h3>
+                <button type="button" class="btn btn-success" onclick="viewClose('test_view_close');">CLOSE</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h3>Test Event Tracking</h3>
+                <button type="button" class="btn btn-success" onclick="sendEventTracking();">EVENT TRACKING</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script>
+
+        function sendRegisterSuccessulEvent() {
+            var params = {
+                "Data": [
+                    {
+                        "Variable": "group_nn_user",
+                        "Value": "1",
+                        "Cast": "NUMBER"
+                    },
+                    {
+                        "Variable": "group_client_id",
+                        "Value": "cai",
+                        "Cast": "STRING"
+                    }
+                ]
+            }
+            putEvent(params)
+        }
+
+        function putEvent(params) {
+            console.log(params);
+            
+            var jsonString = JSON.stringify(params);
+            console.log(jsonString);
+
+            // for Android
+            try {
+                if (JSInterface) JSInterface.putEventAssist(jsonString);
+            } catch (err) {}
+
+            // for iOS
+            try {
+                window.webkit.messageHandlers.putEventAssist.postMessage(jsonString);
+            } catch (err) {}
+        }
+
+        function viewClose(string) {
+            console.log(string);
+            //window.close();
+            
+            // for Android
+            try {
+                if (JSInterface) JSInterface.viewClose(string);
+            } catch (err) {}
+
+            // for iOS
+            try {
+                window.webkit.messageHandlers.viewClose.postMessage(string);
+            } catch (err) {}
+        }
+
+        function openViewEvent() {
+            var jsonString = "{\"url\":\"https:\/\/fanchun.github.io\/viewClose\/\",\"navType\":\"4\",\"navTitle\":\"Push new page.\"}"
+            viewOpen(jsonString)
+        }
+
+        function viewOpen(string) {
+            console.log(string);
+
+            // for Android
+            try {
+                if (JSInterface) JSInterface.viewOpen(string);
+            } catch (err) {}
+
+            // for iOS
+            try {
+                window.webkit.messageHandlers.viewOpen.postMessage(string);
+            } catch (err) {}
+        }
+      
+        function sendEventTracking() {
+            var params = {
+            "type": "ga4",
+            "name": "screen_view",
+            "data": {
+                "screen_name": "test_javascript_screen_name",
+                "page_category": "test_javascript_page_category",
+                "user_env": "webview"
+            }
+            putEvent(params)
+        }
+
+        function eventTracking(params) {
+            console.log(params);
+            
+            var jsonString = JSON.stringify(params);
+            console.log(jsonString);
+
+            // for Android
+            try {
+                if (JSInterface) JSInterface.eventTracking(jsonString);
+            } catch (err) {}
+
+            // for iOS
+            try {
+                window.webkit.messageHandlers.eventTracking.postMessage(jsonString);
+            } catch (err) {}
+        }
+
+    </script>
+</body>
+</html>

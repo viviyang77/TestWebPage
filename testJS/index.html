@@ -135,12 +135,13 @@
       
         function sendEventTracking() {
             var params = {
-            "type": "ga4",
-            "name": "screen_view",
-            "data": {
-                "screen_name": "test_javascript_screen_name",
-                "page_category": "test_javascript_page_category",
-                "user_env": "webview"
+                "type": "ga4",
+                "name": "screen_view",
+                "data": {
+                    "screen_name": "test_javascript_screen_name",
+                    "page_category": "test_javascript_page_category",
+                    "user_env": "webview"
+                }
             }
             putEvent(params)
         }
